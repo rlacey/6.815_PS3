@@ -3,7 +3,8 @@ import numpy as np
 ##import matplotlib.pyplot as plt
 import a3
 ##import matplotlib.cm as cm
-import imageIO as io 
+import imageIO as io
+import time
 
 ## No need to touch this class
 #class myImageIO:
@@ -101,20 +102,29 @@ def test_unsharpen():
   io.imwrite(out, 'my_unsharpen.png')
 
 def test_bilateral():
-  im=myImageIO.imread('images/lens-3-med.png', 1.0)
+  im=io.imread('lens-3-med.png', 1.0)
   out=a3.bilateral(im, 0.1, 1.4)
-  myImageIO.imwrite(out, 'my_bilateral.png', 1.0)
+  io.imwrite(out, 'my_bilateral.png', 1.0)
   
 
 def test_bilaYUV():
-  im=myImageIO.imread('images/lens-3-med.png', 1.0)
+  im=io.imread('lens-3-med.png', 1.0)
   out=a3.bilaYUV(im, 0.1, 1.4, 6)
-  myImageIO.imwrite(out, 'my_bilaYUV.png', 1.0)
+  io.imwrite(out, 'my_bilaYUV.png', 1.0)
   
 def impulse(h=100, w=100):
     out=constantIm(h, w, 0.0)
     out[h/2, w/2]=1
     return out
+
+def timeChallenge():
+  im = io.imread('zebra.png')
+  t1=time.time()
+  a3.gaussianBlur(im,2, 3)
+  print time.time()-t1, 'seconds for Gaussian Blur'
+  t2=time.time()
+  a3.convolve(im, a3.gauss2D())
+  print time.time()-t2, 'seconds for Convolve'
 
 
 #Uncomment the following function to test your code
@@ -124,11 +134,12 @@ def impulse(h=100, w=100):
 ##test_convolve_gauss()
 ##test_convolve_deriv()
 ##test_convolve_Sobel()
-##test_grad()
+test_grad()
 ##test_horigauss()
 ##test_gaussianBlur()
 ##test_gauss2D()
 ##print test_equal()
-test_unsharpen()
-#test_bilateral()
-#test_bilaYUV()
+##test_unsharpen()
+##test_bilateral()
+##test_bilaYUV()
+##timeChallenge()
